@@ -1,0 +1,14 @@
+#auth-menu{
+  margin: 0 auto;
+}
+.container{
+  padding: 50px 0px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-58%);
+}
+
+#tab{
+  max-width: 500px;
+  margin: 0 auto;
+}
