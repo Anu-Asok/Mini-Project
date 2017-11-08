@@ -3,7 +3,7 @@
   ini_set('display_errors', 'On');
   $servername = "localhost";
   $username = "root";
-  $password = "mysql";
+  $password = "password";
   $dbname = "miniproject";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,11 +14,9 @@
   $password=$_POST['password'];
   $name=$_POST['name'];
   $gender=$_POST['gender'];
-  $dob=$_POST['dob'];
   $mobile=$_POST['phonenumber'];
-  $state=$_POST['state'];
-  $sql = "INSERT INTO `User` (`email_id`, `password`, `name`, `gender`, `dob`, `mobile`, `state`)
-          VALUES ('$email', '$password', '$name', '$gender', '$dob', '$mobile', '$state')";
+  $sql = "INSERT INTO `User` (`email_id`, `password`, `name`, `gender`, `mobile`)
+          VALUES ('$email', '$password', '$name', '$gender', '$mobile')";
 
   if ($conn->query($sql) === TRUE) {
       echo "New record created successfully";
