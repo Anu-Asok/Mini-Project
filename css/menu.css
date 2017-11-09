@@ -1,0 +1,22 @@
+#menu-button{
+  max-width:100px;
+  margin-left: 0px;
+}
+.ui.sidebar.menu.vertical.labeled.icon > .item{
+  margin: 10px 10px;
+  width: 180px;
+}
+.ui.top.attached.demo.menu > .item{
+  margin: 10px 10px;
+  width: 180px;
+}
+
+.ui.container{
+  margin: 0 auto;
+  max-width: 500px !important;
+  margin-top: 70px;
+  word-wrap: break-word;
+}
+#logo{
+  height:85px;
+}

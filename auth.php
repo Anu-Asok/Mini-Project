@@ -56,22 +56,14 @@
               </div>
 
               <br>
-              <!-- <div class="ui calendar" id="date">
-                <div class="ui fluid  input left icon">
-                  <i class="calendar icon"></i>
-                  <input type="text" placeholder="Date of Birth" name="dob" required>
-                </div>
-              </div>
-              <br> -->
-
               <div class="ui fluid left icon input">
                 <input type="text" placeholder="Phone Number" name="phonenumber" minlength="10" maxlength="10" required>
                 <i class="text telephone icon"></i>
               </div>
               <br>
               <select class="ui fluid normal dropdown" name="gender" required>
-                <option value="m">Male</option>
-                <option value="f">Female</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
               <div class="ui divider"></div>
               <input type="submit" class="ui teal fluid button" value="Sign Up">
@@ -83,10 +75,6 @@
     <script>
       $('.menu .item').tab();
       $('.dropdown').dropdown();
-      var today = new Date();
-       $('#date').calendar({
-         type:'date'
-       });
     </script>
     <script src="/miniproject/script/auth.js"></script>
   </body>

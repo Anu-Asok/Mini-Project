@@ -10,12 +10,6 @@
     <link rel="stylesheet" href="/miniproject/css/menu.css">
   </head>
   <body>
-    <?php
-      session_start();
-      if(!isset($_SESSION["email"])){
-          echo "<script>window.location.href='/miniproject/auth.php';</script>";
-      }
-    ?>
     <div class="ui sidebar menu vertical labeled icon">
     <img src="/miniproject/train-icon.png" id="logo">
     <br>
@@ -23,24 +17,9 @@
     <div class="ui divider"></div>
     <a href="#" class="item" id="menu-user-info">
       <i class="user icon"></i>
-      Welcome
-      <?php
-        session_start();
-        $servername = "localhost";
-        $username = "root";
-        $password = "mysql";
-        $dbname = "miniproject";
-        $email = $_SESSION["email"];
-        $sql = "SELECT Name FROM User WHERE EmailID='$email'";
-        $con = mysqli_connect($servername, $username, $password, $dbname);
-        $result = mysqli_query($con,$sql);
-        while($row = mysqli_fetch_array($result)) {
-          echo $row['Name'];
-        }
-        mysqli_close($con);
-      ?>
+      Welcome Admin
     </a>
-    <a href="/miniproject/logout.php" class="item" id="logout">
+    <a href="#" class="item" id="logout">
       <i class="sign out icon"></i>
       <span id="auth-state">Logout</span>
     </a>

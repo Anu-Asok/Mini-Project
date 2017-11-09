@@ -3,23 +3,25 @@
   ini_set('display_errors', 'On');
   $servername = "localhost";
   $username = "root";
-  $password = "password";
+  $password = "mysql";
   $dbname = "miniproject";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $email=$_POST['email'];
-  $password=$_POST['password'];
-  $name=$_POST['name'];
-  $gender=$_POST['gender'];
-  $mobile=$_POST['phonenumber'];
-  $sql = "INSERT INTO `User` (`email_id`, `password`, `name`, `gender`, `mobile`)
-          VALUES ('$email', '$password', '$name', '$gender', '$mobile')";
+  $Email=$_POST['email'];
+  $Password=md5($_POST['password']);
+  $Name=$_POST['name'];
+  $Gender=$_POST['gender'];
+  $Mobile=$_POST['phonenumber'];
+  $sql = "INSERT INTO `User` (`EmailID`, `Password`, `Name`, `Gender`, `Mobile`)
+          VALUES ('$Email', '$Password', '$Name', '$Gender', '$Mobile')";
 
   if ($conn->query($sql) === TRUE) {
-      echo "New record created successfully";
+      session_start();
+      $_SESSION["email"]=$Email;
+      echo "<script>window.location.href='/miniproject/home.php';</script>";
   } else {
       echo "Error: " . $sql . "<br>" . $conn->error;
   }
