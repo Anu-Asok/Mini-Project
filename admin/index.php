@@ -8,17 +8,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      h1{
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <div class="ui container">
         <div id="login-form"  style="max-width:500px; margin:0 auto;">
+          <h1>Admin Panel</h1>
+          <br>
           <div class="ui fluid left icon input">
-            <input type="email" id="email" placeholder="Email">
+            <input type="text" name="username" placeholder="Username">
             <i class="user icon"></i>
           </div>
           <br>
           <div class="ui fluid left icon input">
-            <input type="password" id="password" placeholder="Password">
+            <input type="password" name="password" placeholder="Password">
             <i class="sign in icon"></i>
           </div>
           <div class="ui divider"></div>
