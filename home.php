@@ -28,7 +28,7 @@
         session_start();
         $servername = "localhost";
         $username = "root";
-        $password = "mysql";
+        $password = "password";
         $dbname = "miniproject";
         $email = $_SESSION["email"];
         $sql = "SELECT Name FROM User WHERE EmailID='$email'";

@@ -3,7 +3,7 @@
   ini_set('display_errors', 'On');
   $servername = "localhost";
   $username = "root";
-  $password = "mysql";
+  $password = "password";
   $dbname = "miniproject";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
