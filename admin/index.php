@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/miniproject/logo.png">  
     <style>
       h1{
         text-align: center;
@@ -16,9 +17,10 @@
   </head>
   <body>
     <div class="ui container">
-        <div id="login-form"  style="max-width:500px; margin:0 auto;">
-          <h1>Admin Panel</h1>
-          <br>
+      <div id="login-form"  style="max-width:500px; margin:0 auto;">
+        <h1>Admin Panel</h1>
+        <br>
+        <form action="login.php" method="post">
           <div class="ui fluid left icon input">
             <input type="text" name="username" placeholder="Username">
             <i class="user icon"></i>
@@ -29,10 +31,9 @@
             <i class="sign in icon"></i>
           </div>
           <div class="ui divider"></div>
-          <button id="login" class="ui teal fluid button">Login</button>
-        </div>
+          <input type="submit" class="ui teal fluid button" value="Submit">
+        </form>
       </div>
     </div>
-    <script src="/miniproject/script/auth.js"></script>
   </body>
 </html>

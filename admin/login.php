@@ -9,18 +9,18 @@
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $Email=$_POST['email'];
-  $Password=md5($_POST['password']);
-  $sql = "SELECT * FROM User WHERE EmailID='$Email' AND Password='$Password'";
+  $username=trim($_POST['username']);
+  $password=md5($_POST['password']);
+  $sql = "SELECT * FROM `Admin` WHERE Username='$username' AND Password='$password'";
   $result = $conn->query($sql);
   if ($result->num_rows > 0){
     $row = $result->fetch_assoc();
     session_start();
-    $_SESSION['email']=$row['EmailID'];
-    echo "<script>window.location.href='/miniproject/home.php';</script>";
+    $_SESSION['username']=$row['Username'];
+    echo "<script>window.location.href='/miniproject/admin/home.php';</script>";
   }
   else{
-    echo "<script>alert('Incorrect Email/Password!');window.location.href='/miniproject/index.php';</script>";
+      echo "<script>alert('Incorrect Email ID/Password');window.location.href='/miniproject/admin/index.php';</script>";
   }
   $conn->close();
 ?>

@@ -23,7 +23,7 @@
       $_SESSION["email"]=$Email;
       echo "<script>window.location.href='/miniproject/home.php';</script>";
   } else {
-      echo "Error: " . $sql . "<br>" . $conn->error;
+      echo "<script>alert('Email ID already exists!');window.location.href='/miniproject/index.php';</script>";
   }
 
   $conn->close();
