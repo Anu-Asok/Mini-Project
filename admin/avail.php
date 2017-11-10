@@ -22,21 +22,21 @@
     <br>
     <h4>Railway Reservation System</h4>
     <div class="ui divider"></div>
-    <a href="#" class="item" id="menu-user-info">
-      <i class="user icon"></i>
-      Welcome Admin
-    </a>
-    <a href="/miniproject/admin/station.php" class="item" id="logout">
+    <a href="/miniproject/admin/station.php" class="item">
       <i class="add circle icon"></i>
-      <span id="auth-state">Add Station</span>
+      Add Station
     </a>
-    <a href="/miniproject/admin/logout.php" class="item" id="logout">
+    <a href="/miniproject/admin/train.php" class="item">
       <i class="train icon"></i>
-      <span id="auth-state">Add Train</span>
+      Add Train
     </a>
-    <a href="/miniproject/admin/logout.php" class="item" id="logout">
+    <a href="#" class="active item">
+      <i class="location arrow icon"></i>
+      Avail
+    </a>
+    <a href="/miniproject/admin/logout.php" class="item">
       <i class="sign out icon"></i>
-      <span id="auth-state">Logout</span>
+      Logout
     </a>
   </div>
 
@@ -51,20 +51,43 @@
       </a>
     </div>
     <div class="ui container">
-      <form class="ui form">
+      <form class="ui form" action="/miniproject/admin/submit-available.php" method="post">
         <div class="field">
-          <label>First Name</label>
-          <input type="text" name="first-name" placeholder="First Name">
+          <label>Train ID</label>
+          <select class="ui fluid normal dropdown" name="train-id" required>
+            <?php
+              error_reporting(E_ALL);
+              ini_set('display_errors', 'on');
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "miniproject";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                  die("Connection failed: " . $conn->connect_error);
+              }
+              $sql = "SELECT Train_ID FROM Train";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0){
+                while($row = $result->fetch_assoc()) {
+                  $trainid = $row['Train_ID'];
+                  echo "<option value='".$trainid."'>".$trainid."</option>";
+                }
+              }
+              else{
+                echo "<script>alert('Error fetching train id!);</script>";
+              }
+              $conn->close();
+            ?>
+          </select>
         </div>
         <div class="field">
-          <label>Last Name</label>
-          <input type="text" name="last-name" placeholder="Last Name">
+          <label>Available Date</label>
+          <input type="date" name="date" placeholder="Date" required>
         </div>
         <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" tabindex="0" class="hidden">
-            <label>I agree to the Terms and Conditions</label>
-          </div>
+          <label>Available Seats</label>
+          <input type="number" name="available-seats" placeholder="Available Seats" required>
         </div>
         <button class="ui button" type="submit">Submit</button>
       </form>

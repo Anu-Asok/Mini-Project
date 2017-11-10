@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui-calendar/0.0.8/calendar.min.css" />
   </head>
   <body>
+    <?php
+      session_start();
+      if(isset($_SESSION["email"])){
+          echo "<script>window.location.href='/miniproject/home.php';</script>";
+      }
+    ?>
     <div class="ui container">
       <div class="ui secondary menu">
         <div id="auth-menu">

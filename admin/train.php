@@ -22,11 +22,11 @@
     <br>
     <h4>Railway Reservation System</h4>
     <div class="ui divider"></div>
-    <a href="#" class="item active">
+    <a href="/miniproject/admin/station.php" class="item">
       <i class="add circle icon"></i>
       Add Station
     </a>
-    <a href="/miniproject/admin/train.php" class="item">
+    <a href="#" class="item active">
       <i class="train icon"></i>
       Add Train
     </a>
@@ -53,8 +53,32 @@
     <div class="ui container">
       <form class="ui form" action="/miniproject/admin/station_submit.php" method="post">
         <div class="field">
-          <label>Station Name</label>
-          <input type="text" name="s_name" placeholder="Station Name">
+          <label>Train ID</label>
+          <select class="ui fluid normal dropdown" name="train-id" required>
+            <?php
+              error_reporting(E_ALL);
+              ini_set('display_errors', 'on');
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "miniproject";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                  die("Connection failed: " . $conn->connect_error);
+              }
+              $sql = "SELECT Train_ID FROM Train";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0){
+                $row = $result->fetch_assoc();
+                $trainid = $row['Train_ID'];
+                echo "<option value='".$trainid."'>".$trainid."</option>";
+              }
+              else{
+                echo "<script>alert('Error fetching train id!);</script>";
+              }
+              $conn->close();
+            ?>
+          </select>
         </div>
         <div class="field">
           <label>Station Code</label>

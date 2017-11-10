@@ -17,7 +17,7 @@
     $row = $result->fetch_assoc();
     session_start();
     $_SESSION['username']=$row['Username'];
-    echo "<script>window.location.href='/miniproject/admin/home.php';</script>";
+    echo "<script>window.location.href='/miniproject/admin/station.php';</script>";
   }
   else{
       echo "<script>alert('Incorrect Email ID/Password');window.location.href='/miniproject/admin/index.php';</script>";
