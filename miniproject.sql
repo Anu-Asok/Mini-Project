@@ -5,6 +5,20 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+DELIMITER ;;
+
+DROP PROCEDURE IF EXISTS `addStatus`;;
+CREATE PROCEDURE `addStatus`(in d date, in trainid int, in available int)
+begin
+    if dayofweek(d) in (select Dayofweek from Days_available where Train_ID=trainid) then
+      insert into Train_status values(trainid,d,available,0);
+    else
+      call raise_error;
+    end if;
+   end;;
+
+DELIMITER ;
+
 DROP TABLE IF EXISTS `Admin`;
 CREATE TABLE `Admin` (
   `Username` varchar(30) NOT NULL,
@@ -15,31 +29,97 @@ CREATE TABLE `Admin` (
 INSERT INTO `Admin` (`Username`, `Password`) VALUES
 ('admin',	'e10adc3949ba59abbe56e057f20f883e');
 
+DROP TABLE IF EXISTS `Days_available`;
+CREATE TABLE `Days_available` (
+  `Train_ID` int(11) NOT NULL,
+  `Dayofweek` enum('1','2','3','4','5','6','7') NOT NULL,
+  PRIMARY KEY (`Train_ID`,`Dayofweek`),
+  CONSTRAINT `Days_available_ibfk_1` FOREIGN KEY (`Train_ID`) REFERENCES `Train` (`Train_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Days_available` (`Train_ID`, `Dayofweek`) VALUES
+(16306,	'1'),
+(16306,	'3'),
+(16306,	'4');
+
+DROP TABLE IF EXISTS `Route`;
+CREATE TABLE `Route` (
+  `Train_ID` int(11) NOT NULL,
+  `Station_Code` varchar(6) NOT NULL,
+  `Stop_number` int(11) NOT NULL,
+  `Arrival_time` varchar(5) NOT NULL,
+  `Departure_time` varchar(5) NOT NULL,
+  `Source_distance` decimal(10,0) NOT NULL,
+  KEY `Station_Code` (`Station_Code`),
+  CONSTRAINT `Route_ibfk_1` FOREIGN KEY (`Station_Code`) REFERENCES `Station` (`Station_Code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 DROP TABLE IF EXISTS `Station`;
 CREATE TABLE `Station` (
-  `Station_Code` char(3) NOT NULL,
+  `Station_Code` varchar(6) NOT NULL,
   `Station_Name` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`Station_Code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `Station` (`Station_Code`, `Station_Name`) VALUES
+('ALLP',	'Alappuzha'),
+('CAN',	'Kannur'),
+('ERS',	'Ernakulam Junction');
+
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `test` (`id`) VALUES
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(0),
+(0),
+(0),
+(0);
 
 DROP TABLE IF EXISTS `Train`;
 CREATE TABLE `Train` (
   `Train_ID` int(11) NOT NULL,
   `Train_name` varchar(50) NOT NULL,
   `Train_type` enum('Superfast','Express') NOT NULL,
-  `Source_stn` varchar(50) NOT NULL,
-  `Destination_stn` varchar(50) NOT NULL,
-  `Source_Code` char(3) NOT NULL,
-  `Destination_Code` char(3) NOT NULL,
+  `Source_Code` varchar(6) NOT NULL,
+  `Destination_Code` varchar(6) NOT NULL,
   PRIMARY KEY (`Train_ID`),
   UNIQUE KEY `Train_name` (`Train_name`),
   KEY `Source_Code` (`Source_Code`),
   KEY `Destination_Code` (`Destination_Code`),
   CONSTRAINT `Train_ibfk_1` FOREIGN KEY (`Source_Code`) REFERENCES `Station` (`Station_Code`),
-  CONSTRAINT `Train_ibfk_2` FOREIGN KEY (`Destination_Code`) REFERENCES `Station` (`Station_Code`)
+  CONSTRAINT `Train_ibfk_3` FOREIGN KEY (`Destination_Code`) REFERENCES `Station` (`Station_Code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `Train` (`Train_ID`, `Train_name`, `Train_type`, `Source_Code`, `Destination_Code`) VALUES
+(16306,	'Executive Express',	'Express',	'ERS',	'CAN'),
+(16307,	'Alappuzha Kannur Express',	'Express',	'ALLP',	'CAN');
+
+DROP TABLE IF EXISTS `Train_status`;
+CREATE TABLE `Train_status` (
+  `Train_ID` int(11) NOT NULL,
+  `Available_Date` date NOT NULL,
+  `Available_Seats` int(11) NOT NULL,
+  `Booked_Seats` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Train_ID`,`Available_Date`),
+  CONSTRAINT `Train_status_ibfk_1` FOREIGN KEY (`Train_ID`) REFERENCES `Train` (`Train_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Train_status` (`Train_ID`, `Available_Date`, `Available_Seats`, `Booked_Seats`) VALUES
+(16306,	'2017-11-09',	34,	12),
+(16306,	'2017-11-10',	34,	0),
+(16306,	'2017-11-12',	56,	0),
+(16306,	'2017-11-22',	56,	0),
+(16306,	'2017-11-29',	58,	0),
+(16306,	'2017-12-06',	23,	32);
 
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` (
@@ -58,4 +138,4 @@ INSERT INTO `User` (`EmailID`, `Password`, `Name`, `Gender`, `Mobile`) VALUES
 ('anu.asok701@gmail.com',	'25d55ad283aa400af464c76d713c07ad',	'Anupam Asok',	'male',	'9447888520'),
 ('jacob@gmail.com',	'b1970a763752942773dcc9ab9fde0f9f',	'Jacob Roy',	'male',	'1212121212');
 
--- 2017-11-09 13:47:31
+-- 2017-11-10 17:17:27
