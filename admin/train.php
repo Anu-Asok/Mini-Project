@@ -51,7 +51,7 @@
       </a>
     </div>
     <div class="ui container">
-      <form class="ui form" action="/miniproject/admin/station_submit.php" method="post">
+      <form class="ui form" action="/miniproject/admin/train_submit.php" method="post">
         <div class="field">
           <label>Train ID</label>
           <input type="text" name="train-id" placeholder="Train ID" required>
