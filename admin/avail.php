@@ -97,6 +97,8 @@
     $('#menu-button').click(function() {
       $('.ui.sidebar').sidebar('toggle');
     });
+    $('.ui.dropdown').dropdown();
+    
   </script>
   </body>
 </html>
