@@ -19,7 +19,7 @@
     <?php
       session_start();
       if(isset($_SESSION["username"])){
-          echo "<script>window.location.href='/miniproject/admin/home.php';</script>";
+          echo "<script>window.location.href='/miniproject/admin/station.php';</script>";
       }
     ?>
     <div class="ui container">
