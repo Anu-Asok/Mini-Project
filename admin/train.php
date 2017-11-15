@@ -17,6 +17,32 @@
           echo "<script>window.location.href='/miniproject/admin/index.php';</script>";
       }
     ?>
+    <?php
+      error_reporting(E_ALL);
+      ini_set('display_errors', 'on');
+      $servername = "localhost";
+      $username = "root";
+      $password = "password";
+      $dbname = "miniproject";
+      $GLOBALS['option']="";
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+      }
+      $sql = "SELECT Station_code FROM Station";
+      $result = $conn->query($sql);
+      if ($result->num_rows > 0){
+        while($row = $result->fetch_assoc()) {
+          $Station_code = $row['Station_code'];
+          $GLOBALS['option'].="<option value='".$Station_code."'>".$Station_code."</option>";
+        }
+
+      }
+      else{
+        echo "<script>alert('Error fetching train id!');</script>";
+      }
+      $conn->close();
+    ?>
     <div class="ui sidebar menu vertical labeled icon">
     <img src="/miniproject/logo.png" id="logo">
     <br>
@@ -54,7 +80,7 @@
       <form class="ui form" action="/miniproject/admin/train_submit.php" method="post">
         <div class="field">
           <label>Train ID</label>
-          <input type="text" name="train-id" placeholder="Train ID" required>
+          <input type="number" name="train-id" placeholder="Train ID" required>
         </div>
         <div class="field">
           <label>Train name</label>
@@ -70,28 +96,7 @@
           <label>Source</label>
           <select class="ui fluid normal dropdown" name="source" required>
             <?php
-            error_reporting(E_ALL);
-            ini_set('display_errors', 'on');
-            $servername = "localhost";
-            $username = "root";
-            $password = "password";
-            $dbname = "miniproject";
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            }
-            $sql = "SELECT Station_code FROM Station";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0){
-              while($row = $result->fetch_assoc()) {
-                $Station_code = $row['Station_code'];
-                echo "<option value='".$Station_code."'>".$Station_code."</option>";
-              }
-            }
-            else{
-              echo "<script>alert('Error fetching train id!);</script>";
-            }
-            $conn->close();
+              echo $GLOBALS['option'];
             ?>
           </select>
         </div>
@@ -99,34 +104,43 @@
           <label>Destination</label>
           <select class="ui fluid normal dropdown" name="destination" required>
             <?php
-            error_reporting(E_ALL);
-            ini_set('display_errors', 'on');
-            $servername = "localhost";
-            $username = "root";
-            $password = "password";
-            $dbname = "miniproject";
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            }
-            $sql = "SELECT Station_code FROM Station";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0){
-              while($row = $result->fetch_assoc()) {
-                $Station_code = $row['Station_code'];
-                echo "<option value='".$Station_code."'>".$Station_code."</option>";
-              }
-            }
-            else{
-              echo "<script>alert('Error fetching train id!);</script>";
-            }
-            $conn->close();
+              echo $GLOBALS['option'];
             ?>
           </select>
         </div>
-        <div class="field">
-          <label></label>
-        </div>
+        <table class="ui striped table">
+          <thead>
+            <tr>
+              <th>
+                Stop No.
+              </th>
+              <th>
+                Station Code
+              </th>
+              <th>
+                Arrival Time
+              </th>
+              <th>
+                Departure Time
+              </th>
+              <th>
+                Source Distance
+              </th>
+            </tr>
+          </thead>
+          <tbody id="add-stops">
+
+          </tbody>
+          <tfoot class="full-width">
+            <tr>
+              <th colspan="5">
+                <div class="ui right floated small primary button" id="add">
+                  Add Stops
+                </div>
+              </th>
+            </tr>
+          </tfoot>
+        </table>
         <button class="ui button" type="submit">Submit</button>
       </form>
     </div>
@@ -135,7 +149,35 @@
     $('#menu-button').click(function() {
       $('.ui.sidebar').sidebar('toggle');
     });
+    var stopNo=1;
     $('.ui.dropdown').dropdown();
+    $('#add').on('click',function(){
+      var tr=`
+      <tr>
+        <td>
+          ${stopNo}
+        </td>
+        <td>
+          <select class="ui fluid normal dropdown" name="stationCode[]" required>
+            <?php
+              echo $GLOBALS['option'];
+            ?>
+          </select>
+        </td>
+        <td>
+          <input type="time" name="arrivaltime[]">
+        </td>
+        <td>
+        <input type="time" name="departuretime[]">
+        </td>
+        <td>
+          <input type="number" name="distance[]" required>
+        </td>
+      </tr>
+      `;
+      stopNo+=1;
+      $('#add-stops').append(tr);
+    });
   </script>
   </body>
 </html>

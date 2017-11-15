@@ -84,25 +84,58 @@
       </a>
     </div>
     <div class="ui container">
-      <form class="ui form">
-        <div class="field">
-          <label>First Name</label>
-          <input type="text" name="first-name" placeholder="First Name">
-        </div>
-        <div class="field">
-          <label>Last Name</label>
-          <input type="text" name="last-name" placeholder="Last Name">
-        </div>
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" tabindex="0" class="hidden">
-            <label>I agree to the Terms and Conditions</label>
+      <div class="ui three top attached steps">
+        <div class="active step" id="search-trains">
+          <i class="search icon"></i>
+          <div class="content">
+            <div class="description">Search trains</div>
           </div>
         </div>
-        <button class="ui button" type="submit">Submit</button>
+        <div class="disabled step" id="fill-details">
+          <i class="user icon"></i>
+          <div class="content">
+            <div class="description">Fill details</div>
+          </div>
+        </div>
+        <div class="disabled step" id="confirm-order">
+          <i class="info icon"></i>
+          <div class="content">
+            <div class="description">Ticket confirmation</div>
+          </div>
+        </div>
+      </div>
+      <div class="ui attached segment">
+        <div id="search-trains-body">
+          <a href="#" class="ui button" id="search-trains-next">Next</a>
+        </div>
+        <div id="fill-details-body" hidden>
+          <a href="#" class="ui primary button" id="fill-details-next">Next</a>
+        </div>
+        <div id="confirm-order-body" hidden>
+          <h1>Order confirmed</h1>
+        </div>
+      </div>
       </form>
     </div>
   </div>
   <script src="/miniproject/script/menu.js"></script>
+  <script>
+    $('#search-trains-next').on('click',function(){
+      $('#search-trains').removeClass('active');
+      $('#search-trains').addClass('completed');
+      $('#search-trains-body').hide();
+      $('#fill-details').removeClass('disabled');
+      $('#fill-details').addClass('active');
+      $('#fill-details-body').show();
+    });
+    $('#fill-details-body').on('click',function(){
+      $('#fill-details').removeClass('active');
+      $('#fill-details').addClass('completed');
+      $('#fill-details-body').hide();
+      $('#confirm-order').removeClass('disabled');
+      $('#confirm-order').addClass('active');
+      $('#confirm-order-body').show();
+    });
+  </script>
   </body>
 </html>
