@@ -16,8 +16,10 @@
           VALUES ('$scode', '$sname')";
 
   if ($conn->query($sql) === TRUE) {
+      //Prints success message
       echo "<script>alert('Station added successfully');window.location.href='/miniproject/admin/station.php';</script>";
   } else {
+      //Alerts when insert is unsuccessful
       echo "<script>alert('Station already added!');window.location.href='/miniproject/admin/station.php';</script>";
   }
 
