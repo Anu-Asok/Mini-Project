@@ -17,6 +17,33 @@
           echo "<script>window.location.href='/miniproject/index.php';</script>";
       }
     ?>
+    <?php
+      error_reporting(E_ALL);
+      ini_set('display_errors', 'on');
+      $servername = "localhost";
+      $username = "root";
+      $password = "password";
+      $dbname = "miniproject";
+      $GLOBALS['option']="";
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+      }
+      $sql = "SELECT * FROM Station";
+      $result = $conn->query($sql);
+      if ($result->num_rows > 0){
+        while($row = $result->fetch_assoc()) {
+          $Station_code = $row['Station_Code'];
+          $Station_name = $row['Station_Name'];
+          $GLOBALS['option'].="<option value='".$Station_code."'>".$Station_name." ".$Station_code." "."</option>";
+        }
+
+      }
+      else{
+        echo "<script>alert('Error fetching train id!');</script>";
+      }
+      $conn->close();
+    ?>
     <div class="ui sidebar menu vertical labeled icon">
     <img src="/miniproject/logo.png" id="logo">
     <br>
@@ -106,35 +133,208 @@
       </div>
       <div class="ui attached segment">
         <div id="search-trains-body">
-          <a href="#" class="ui button" id="search-trains-next">Next</a>
+          <div class="ui form">
+            <div class="field">
+              <label>Source</label>
+              <select class="ui search dropdown" name="source">
+                <?php
+                echo $GLOBALS['option'];
+                ?>
+              </select>
+            </div>
+            <div class="field">
+              <label>Destination</label>
+              <select class="ui search dropdown" name="destination">
+                <?php
+                echo $GLOBALS['option'];
+                ?>
+              </select>
+            </div>
+            <div class="field">
+              <label>Journey Date</label>
+              <input type="date" name="journey-date">
+            </div>
+            <button class="ui fluid button" id="search-trains-next">Search Trains</button>
+          </div>
+          <table class="ui celled table" hidden>
+            <thead>
+              <tr>
+                <th>Train No.</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="train-details">
+            </tbody>
+            <tfoot class="full-width" hidden>
+              <tr>
+                <th colspan="4">
+                  <div class="ui right floated small primary button" id="select-train">
+                    Book
+                  </div>
+                </th>
+              </tr>
+            </tfoot>
+          </table>
         </div>
         <div id="fill-details-body" hidden>
-          <a href="#" class="ui primary button" id="fill-details-next">Next</a>
+          <div class="ui form">
+            <div class="disabled field">
+              <label>Train No.</label>
+              <input type="text" name="selected-train">
+            </div>
+            <div class="field">
+              <label>Name</label>
+              <input type="text" name="name" placeholder="Name">
+            </div>
+            <div class="field">
+              <label>Age</label>
+              <input type="number" name="age" placeholder="Age">
+            </div>
+            <div class="inline fields">
+              <label>Gender:</label>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" id="male" name="gender" value="male">
+                  <label for="male">Male</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" id="female" name="gender" value="female">
+                  <label for="female">Female</label>
+                </div>
+              </div>
+            </div>
+            <button class="ui button" id="book">Submit</button>
+          </div>
         </div>
-        <div id="confirm-order-body" hidden>
-          <h1>Order confirmed</h1>
+        <div style="text-align:center;" id="confirm-order-body" hidden>
+          <span>Waiting for confirmation...</span>
         </div>
       </div>
-      </form>
     </div>
   </div>
   <script src="/miniproject/script/menu.js"></script>
   <script>
-    $('#search-trains-next').on('click',function(){
-      $('#search-trains').removeClass('active');
+    var trainNo;
+    $('.ui .dropdown').dropdown();
+    $('#select-train').on('click',function(){
+      trainNo=$("input:checked").val();
+      if(trainNo===undefined){
+        alert('Select a train!');
+        return;
+      }
+      $('input[name="selected-train"]').val(trainNo);
       $('#search-trains').addClass('completed');
+      $('#search-trains').removeClass('active');
       $('#search-trains-body').hide();
       $('#fill-details').removeClass('disabled');
       $('#fill-details').addClass('active');
       $('#fill-details-body').show();
     });
-    $('#fill-details-body').on('click',function(){
-      $('#fill-details').removeClass('active');
+    $('#book').on('click',function(){
       $('#fill-details').addClass('completed');
+      $('#fill-details').removeClass('active');
       $('#fill-details-body').hide();
       $('#confirm-order').removeClass('disabled');
       $('#confirm-order').addClass('active');
       $('#confirm-order-body').show();
+      $('.loader').show();
+      $.post(
+        "book.php",
+        {
+          "message":"Worked Yo"
+        },
+        function(data,status){
+          $('#confirm-order').addClass('completed');
+          var ticket=`
+            <h3>Ticket</h3>
+            <table class="ui celled table">
+              <tbody>
+                <tr>
+                  <td>PNR</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Passenger name</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Seat number</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Date of journey</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Source</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Departure time</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Destination</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Arrival time</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Fare</td>
+                  <td>changewithbraces</td>
+                </tr>
+                <tr>
+                  <td>Distance</td>
+                  <td>changewithbraces</td>
+                </tr>
+              </tbody>
+            </table>
+            <a href="/miniproject/home.php" class="ui fluid green button">Book another ticket</a>
+          `;
+          $('#confirm-order-body').html(ticket);
+        }
+      );
+    });
+    $('#search-trains-next').on('click',function(){
+      $.post("getTrain.php",
+      {
+        "source":$("select[name='source']").val(),
+        "destination":$("select[name='destination']").val()
+      },
+      function(data, status){
+        data=JSON.parse(data);
+        if(data[0]=='success'){
+          $('#train-details').html('');
+          for(var i=1; i<data.length; i++){
+            var row=`
+              <tr>
+                <td>${data[i]['Train_ID']}</td>
+                <td>${data[i]['Departure_Time']}</td>
+                <td>
+                  ${data[i]['Arrival_Time']}
+                </td>
+                <td>
+                  <input type="radio" name="trainID" value="${data[i]['Train_ID']}">
+                </td>
+              </tr>
+            `;
+            $('#train-details').append(row);
+          }
+          $('table').show();
+          $('tfoot').show();
+        }
+        else{
+          $('table').hide();
+          $('tfoot').hide();
+          alert("No trains found!");
+        }
+      });
     });
   </script>
   </body>

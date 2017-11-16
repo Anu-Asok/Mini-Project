@@ -118,13 +118,13 @@
                 Station Code
               </th>
               <th>
-                Arrival Time
+                Arrival Time (HH:MM)
               </th>
               <th>
-                Departure Time
+                Departure Time (HH:MM)
               </th>
               <th>
-                Source Distance
+                Source Distance (Km)
               </th>
             </tr>
           </thead>
@@ -171,7 +171,7 @@
         <input type="time" name="departuretime[]">
         </td>
         <td>
-          <input type="number" name="distance[]" required>
+          <input type="number" name="distance[]" step="0.01" required>
         </td>
       </tr>
       `;
