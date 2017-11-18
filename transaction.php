@@ -67,13 +67,17 @@
         mysqli_close($con);
       ?>
     </a>
-    <a href="/miniproject/transaction.php" class="item">
+    <a href="/miniproject/home.php" class="item">
+      <i class="home icon"></i>
+      Home
+    </a>
+    <a href="#" class="active item">
       <i class="rupee icon"></i>
-      <span id="auth-state">Transactions</span>
+      Transactions
     </a>
     <a href="/miniproject/logout.php" class="item">
       <i class="sign out icon"></i>
-      <span id="auth-state">Logout</span>
+      Logout
     </a>
   </div>
   <div class="ui modal">
