@@ -67,7 +67,7 @@
         mysqli_close($con);
       ?>
     </a>
-    <a href="/miniproject/logout.php" class="item">
+    <a href="/miniproject/transaction.php" class="item">
       <i class="rupee icon"></i>
       <span id="auth-state">Transactions</span>
     </a>
@@ -162,6 +162,8 @@
                 <th>Train No.</th>
                 <th>Departure Time</th>
                 <th>Arrival Time</th>
+                <th>Available Seats</th>
+                <th>Distance</th>
                 <th></th>
               </tr>
             </thead>
@@ -169,7 +171,7 @@
             </tbody>
             <tfoot class="full-width" hidden>
               <tr>
-                <th colspan="4">
+                <th colspan="6">
                   <div class="ui right floated small primary button" id="select-train">
                     Book
                   </div>
@@ -184,6 +186,10 @@
               <label>Train No.</label>
               <input type="text" name="selected-train">
             </div>
+            <div class="disabled field">
+              <label>Journey Date</label>
+              <input type="date" name="selected-journey-date">
+            </div>
             <div class="field">
               <label>Name</label>
               <input type="text" name="name" placeholder="Name">
@@ -196,13 +202,13 @@
               <label>Gender:</label>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" id="male" name="gender" value="male">
+                  <input type="radio" id="male" name="gender" value="Male">
                   <label for="male">Male</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" id="female" name="gender" value="female">
+                  <input type="radio" id="female" name="gender" value="Female">
                   <label for="female">Female</label>
                 </div>
               </div>
@@ -211,22 +217,24 @@
           </div>
         </div>
         <div style="text-align:center;" id="confirm-order-body" hidden>
-          <span>Waiting for confirmation...</span>
+          <h4>Waiting for confirmation...</h4>
         </div>
       </div>
     </div>
   </div>
   <script src="/miniproject/script/menu.js"></script>
   <script>
-    var trainNo;
+    var trainNo,journeyDate;
     $('.ui .dropdown').dropdown();
     $('#select-train').on('click',function(){
       trainNo=$("input:checked").val();
+      journeyDate=$('input[name=journey-date]').val();
       if(trainNo===undefined){
         alert('Select a train!');
         return;
       }
       $('input[name="selected-train"]').val(trainNo);
+      $('input[name="selected-journey-date"]').val(journeyDate);
       $('#search-trains').addClass('completed');
       $('#search-trains').removeClass('active');
       $('#search-trains-body').hide();
@@ -245,67 +253,67 @@
       $.post(
         "book.php",
         {
-          "message":"Worked Yo"
+          "trainId":trainNo,
+          "journeyDate":journeyDate,
+          "name":$('input[name="name"]').val(),
+          "age":$('input[name="age"]').val(),
+          "gender":$('input[name="gender"]').val(),
+          "bookedBy":"<?php echo($GLOBALS['user-info']['EmailID']);?>"
         },
         function(data,status){
-          $('#confirm-order').addClass('completed');
-          var ticket=`
-            <h3>Ticket</h3>
-            <table class="ui celled table">
-              <tbody>
-                <tr>
-                  <td>PNR</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Passenger name</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Seat number</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Date of journey</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Source</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Departure time</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Destination</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Arrival time</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Fare</td>
-                  <td>changewithbraces</td>
-                </tr>
-                <tr>
-                  <td>Distance</td>
-                  <td>changewithbraces</td>
-                </tr>
-              </tbody>
-            </table>
-            <a href="/miniproject/home.php" class="ui fluid green button">Book another ticket</a>
-          `;
+          data=JSON.parse(data);
+          if(data['Status']=='success'){
+            $('#confirm-order').addClass('completed');
+            var ticket=`
+              <h3>Ticket</h3>
+              <table class="ui celled table">
+                <tbody>
+                  <tr>
+                    <td>Passenger name</td>
+                    <td>${data['Passenger_name']}</td>
+                  </tr>
+                  <tr>
+                    <td>Seat number</td>
+                    <td>${data['Seat_no']}</td>
+                  </tr>
+                  <tr>
+                    <td>Date of journey</td>
+                    <td>${data['Journey_Date']}</td>
+                  </tr>
+                  <tr>
+                    <td>Age</td>
+                    <td>${data['Age']}</td>
+                  </tr>
+                  <tr>
+                    <td>Gender</td>
+                    <td>${data['Gender']}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <a href="/miniproject/home.php" class="ui fluid green button">Book another ticket</a>
+            `;
+          }
+          else{
+            var ticket=`
+              <h3>Ticket booking failed!</h3>
+              <a href="/miniproject/home.php" class="ui fluid green button">Book another ticket</a>
+            `;
+          }
           $('#confirm-order-body').html(ticket);
         }
       );
     });
     $('#search-trains-next').on('click',function(){
+      var jd=$('input[name=journey-date]').val();
+      if(jd==''){
+        alert('Select journey date!');
+        return;
+      }
       $.post("getTrain.php",
       {
         "source":$("select[name='source']").val(),
-        "destination":$("select[name='destination']").val()
+        "destination":$("select[name='destination']").val(),
+        "journeyDate":jd
       },
       function(data, status){
         data=JSON.parse(data);
@@ -318,6 +326,12 @@
                 <td>${data[i]['Departure_Time']}</td>
                 <td>
                   ${data[i]['Arrival_Time']}
+                </td>
+                <td>
+                  ${data[i]['Available_Seats']}
+                </td>
+                <td>
+                  ${data[i]['Distance']}
                 </td>
                 <td>
                   <input type="radio" name="trainID" value="${data[i]['Train_ID']}">
@@ -334,6 +348,7 @@
           $('tfoot').hide();
           alert("No trains found!");
         }
+      console.log(data);
       });
     });
   </script>
