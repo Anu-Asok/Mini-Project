@@ -20,9 +20,9 @@
           WHERE `Train_ID` = '$_POST[trainId]' AND `Available_Date` = '$_POST[journeyDate]'";
 
   if ($conn->query($sql) === TRUE) {
-    $sql="INSERT INTO `Passenger` (`Seat_no`, `Passenger_name`, `Age`, `Gender`, `Train_ID`, `Booked_By`, `Journey_Date`)
+    $sql="INSERT INTO `Passenger` (`Seat_no`, `Passenger_name`, `Age`, `Gender`, `Train_ID`, `Booked_By`, `Journey_Date`, `Fare`)
           VALUES ('$bookedSeats', '$_POST[name]', '$_POST[age]', '$_POST[gender]', '$_POST[trainId]', '$_POST[bookedBy]',
-          '$_POST[journeyDate]')";
+          '$_POST[journeyDate]', '$_POST[fare]')";
     if ($conn->query($sql) === TRUE){
       $ticket=array(
         'Status' => "success",
@@ -31,7 +31,8 @@
         'Age' => $_POST['age'],
         'Gender' => $_POST['gender'],
         'Train_ID' => $_POST['trainId'],
-        'Journey_Date' => $_POST['journeyDate']
+        'Journey_Date' => $_POST['journeyDate'],
+        'Fare' => $_POST['fare']
       );
       print_r(json_encode($ticket));
     }

@@ -51,6 +51,7 @@
     <div class="ui divider"></div>
     <a href="#" class="item" id="menu-user-info">
       <i class="user icon"></i>
+      Welcome
       <?php
         $servername = "localhost";
         $username = "root";
@@ -167,7 +168,10 @@
                 <th>Departure Time</th>
                 <th>Arrival Time</th>
                 <th>Available Seats</th>
-                <th>Distance</th>
+                <th>
+                  Fare
+                  <i class="rupee icon"></i>
+                </th>
                 <th></th>
               </tr>
             </thead>
@@ -204,18 +208,9 @@
             </div>
             <div class="inline fields">
               <label>Gender:</label>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" id="male" name="gender" value="Male">
-                  <label for="male">Male</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" id="female" name="gender" value="Female">
-                  <label for="female">Female</label>
-                </div>
-              </div>
+              <input type="radio" name="gender" value="Male" checked> Male
+              &nbsp;&nbsp;&nbsp;
+              <input type="radio" name="gender" value="Female"> Female
             </div>
             <button class="ui button" id="book">Submit</button>
           </div>
@@ -231,7 +226,7 @@
     var trainNo,journeyDate;
     $('.ui .dropdown').dropdown();
     $('#select-train').on('click',function(){
-      trainNo=$("input:checked").val();
+      trainNo=$("input[name=trainID]:checked").val();
       journeyDate=$('input[name=journey-date]').val();
       if(trainNo===undefined){
         alert('Select a train!');
@@ -254,6 +249,7 @@
       $('#confirm-order').addClass('active');
       $('#confirm-order-body').show();
       $('.loader').show();
+
       $.post(
         "book.php",
         {
@@ -261,10 +257,12 @@
           "journeyDate":journeyDate,
           "name":$('input[name="name"]').val(),
           "age":$('input[name="age"]').val(),
-          "gender":$('input[name="gender"]').val(),
-          "bookedBy":"<?php echo($GLOBALS['user-info']['EmailID']);?>"
+          "gender":$('input[name="gender"]:checked').val(),
+          "bookedBy":"<?php echo($GLOBALS['user-info']['EmailID']);?>",
+          "fare":fare[trainNo]
         },
         function(data,status){
+          console.log(data);
           data=JSON.parse(data);
           if(data['Status']=='success'){
             $('#confirm-order').addClass('completed');
@@ -321,9 +319,11 @@
       },
       function(data, status){
         data=JSON.parse(data);
+        fare={};
         if(data[0]=='success'){
           $('#train-details').html('');
           for(var i=1; i<data.length; i++){
+            fare[data[i]['Train_ID']]=data[i]['Distance']*0.5;
             var row=`
               <tr>
                 <td>${data[i]['Train_ID']}</td>
@@ -335,7 +335,7 @@
                   ${data[i]['Available_Seats']}
                 </td>
                 <td>
-                  ${data[i]['Distance']}
+                  ${data[i]['Distance']*0.5}
                 </td>
                 <td>
                   <input type="radio" name="trainID" value="${data[i]['Train_ID']}">

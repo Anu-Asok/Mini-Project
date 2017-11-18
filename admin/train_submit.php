@@ -25,8 +25,8 @@
     echo "<script>alert('Source and destination cannot be the same');window.location.href='/miniproject/admin/train.php';</script>";
   }
   else{
-    $sql = "INSERT INTO `Train` (`Train_ID`, `Train_name`, `Train_type`, `Source_Code`,`Destination_Code`)
-            VALUES ('$t_id', '$t_name', '$t_type', '$source', '$destination')";
+    $sql = "INSERT INTO `Train` (`Train_ID`, `Train_name`, `Source_Code`,`Destination_Code`)
+            VALUES ('$t_id', '$t_name', '$source', '$destination')";
     if ($conn->query($sql) == TRUE) {
       $stopNo=1;
       for ($x = 0; $x < sizeof($stationCode); $x++) {
@@ -41,6 +41,11 @@
           VALUES ('$t_id', '$stationCode[$x]', '$stopNo', '$arrivalTime[$x]', '$departureTime[$x]','$distance[$x]')";
         $conn->query($sql);
         $stopNo+=1;
+      }
+      $daysRun=$_POST['daysRun'];
+      foreach($daysRun as $day){
+        $sql="INSERT INTO `Days_available` (`Train_ID`, `Dayofweek`) VALUES ('$t_id', '$day');";
+        $conn->query($sql);
       }
       echo "<script>alert('Train added successfully');window.location.href='/miniproject/admin/train.php';</script>";
     }

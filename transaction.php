@@ -51,6 +51,7 @@
     <div class="ui divider"></div>
     <a href="#" class="item" id="menu-user-info">
       <i class="user icon"></i>
+      Welcome 
       <?php
         $servername = "localhost";
         $username = "root";
@@ -139,6 +140,7 @@
               echo "<th>Seat No.</th>";
               echo "<th>Age</th>";
               echo "<th>Gender</th>";
+              echo "<th>Fare<i class='rupee icon'></i></th>";
               echo "</thead>";
               echo "<tbody>";
               while($row = $result->fetch_assoc()) {
@@ -150,6 +152,7 @@
                 echo "<td>".$row['Seat_no']."</td>";
                 echo "<td>".$row['Age']."</td>";
                 echo "<td>".$row['Gender']."</td>";
+                echo "<td>".$row['Fare']."</td>";
                 echo "</tr>";
               }
               echo "</tbody></table>";

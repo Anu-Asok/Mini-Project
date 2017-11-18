@@ -54,7 +54,7 @@
       <form class="ui form" action="/miniproject/admin/submit-available.php" method="post">
         <div class="field">
           <label>Train ID</label>
-          <select class="ui fluid normal dropdown" name="train-id" required>
+          <select class="ui fluid search normal dropdown" name="train-id" required>
             <?php
               error_reporting(E_ALL);
               ini_set('display_errors', 'on');
@@ -66,12 +66,13 @@
               if ($conn->connect_error) {
                   die("Connection failed: " . $conn->connect_error);
               }
-              $sql = "SELECT Train_ID FROM Train";
+              $sql = "SELECT Train_ID, Train_name FROM Train";
               $result = $conn->query($sql);
               if ($result->num_rows > 0){
                 while($row = $result->fetch_assoc()) {
                   $trainid = $row['Train_ID'];
-                  echo "<option value='".$trainid."'>".$trainid."</option>";
+                  $trainName = $row['Train_name'];
+                  echo "<option value='".$trainid."'>".$trainName." (".$trainid.")</option>";
                 }
               }
               else{
@@ -83,7 +84,10 @@
         </div>
         <div class="field">
           <label>Available Date</label>
-          <input type="date" name="date" placeholder="Date" required>
+          <input type="date" name="date" placeholder="Date" min=<?php
+            echo date('Y-m-d');
+            ?>
+          required>
         </div>
         <div class="field">
           <label>Available Seats</label>
@@ -98,7 +102,9 @@
       $('.ui.sidebar').sidebar('toggle');
     });
     $('.ui.dropdown').dropdown();
-    
+    $("input[type=date]").datepicker({
+      minDate: 0
+    });
   </script>
   </body>
 </html>

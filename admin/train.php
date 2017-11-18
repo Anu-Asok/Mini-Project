@@ -29,12 +29,13 @@
       if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
       }
-      $sql = "SELECT Station_code FROM Station";
+      $sql = "SELECT Station_Code, Station_Name FROM Station";
       $result = $conn->query($sql);
       if ($result->num_rows > 0){
         while($row = $result->fetch_assoc()) {
-          $Station_code = $row['Station_code'];
-          $GLOBALS['option'].="<option value='".$Station_code."'>".$Station_code."</option>";
+          $Station_code = $row['Station_Code'];
+          $Station_name = $row['Station_Name'];
+          $GLOBALS['option'].="<option value='".$Station_code."'>".$Station_name." (".$Station_code.")</option>";
         }
 
       }
@@ -87,14 +88,8 @@
           <input type="text" name="train-name" placeholder="Train Name" required>
         </div>
         <div class="field">
-          <label>Train type</label>
-          <select class="ui fluid normal dropdown" name="train-type" required>
-            <option value="express">Express</option>
-          </select>
-        </div>
-        <div class="field">
           <label>Source</label>
-          <select class="ui fluid normal dropdown" name="source" required>
+          <select class="ui fluid search normal dropdown" name="source" required>
             <?php
               echo $GLOBALS['option'];
             ?>
@@ -102,11 +97,41 @@
         </div>
         <div class="field">
           <label>Destination</label>
-          <select class="ui fluid normal dropdown" name="destination" required>
+          <select class="ui fluid search normal dropdown" name="destination" required>
             <?php
               echo $GLOBALS['option'];
             ?>
           </select>
+        </div>
+        <b>Which all days train run in a week?</b>
+        <br><br>
+        <div class="ui checkbox">
+          <label>Sunday</label>
+          <input type="checkbox" name="daysRun[]" value="1">
+        </div>
+        <div class="ui checkbox">
+          <label>Monday</label>
+          <input type="checkbox" name="daysRun[]" value="2">
+        </div>
+        <div class="ui checkbox">
+          <label>Tuesday</label>
+          <input type="checkbox" name="daysRun[]" value="3">
+        </div>
+        <div class="ui checkbox">
+          <label>Wednesday</label>
+          <input type="checkbox" name="daysRun[]" value="4">
+        </div>
+        <div class="ui checkbox">
+          <label>Thursday</label>
+          <input type="checkbox" name="daysRun[]" value="5">
+        </div>
+        <div class="ui checkbox">
+          <label>Friday</label>
+          <input type="checkbox" name="daysRun[]" value="6">
+        </div>
+        <div class="ui checkbox">
+          <label>Saturday</label>
+          <input type="checkbox" name="daysRun[]" value="7">
         </div>
         <table class="ui striped table">
           <thead>
