@@ -118,7 +118,7 @@
             $username = "root";
             $password = "password";
             $dbname = "miniproject";
-            $email=$GLOBALS['user-info']['Mobile'];
+            $email=$GLOBALS['user-info']['EmailID'];
             $conn = new mysqli($servername, $username, $password, $dbname);
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
@@ -127,16 +127,16 @@
             $result = $conn->query($sql);
             if ($result->num_rows > 0){
               echo "<table class='ui celled table'>";
-                echo "<thead>";
-                  echo "<th>PNR</th>";
-                  echo "<th>Train No.</th>";
-                  echo "<th>Journey Date</th>";
-                  echo "<th>Passenger Name</th>";
-                  echo "<th>Seat No.</th>";
-                  echo "<th>Age</th>";
-                  echo "<th>Gender</th>";
-                echo "</thead>";
-                echo "<tbody>";
+              echo "<thead>";
+              echo "<th>PNR</th>";
+              echo "<th>Train No.</th>";
+              echo "<th>Journey Date</th>";
+              echo "<th>Passenger Name</th>";
+              echo "<th>Seat No.</th>";
+              echo "<th>Age</th>";
+              echo "<th>Gender</th>";
+              echo "</thead>";
+              echo "<tbody>";
               while($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>".$row['PNR']."</td>";
