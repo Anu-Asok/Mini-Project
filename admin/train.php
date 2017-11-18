@@ -44,38 +44,25 @@
       }
       $conn->close();
     ?>
-    <div class="ui sidebar menu vertical labeled icon">
-    <img src="/miniproject/logo.png" id="logo">
-    <br>
-    <h4>Railway Reservation System</h4>
-    <div class="ui divider"></div>
-    <a href="/miniproject/admin/station.php" class="item">
-      <i class="add circle icon"></i>
-      Add Station
-    </a>
-    <a href="#" class="item active">
-      <i class="train icon"></i>
-      Add Train
-    </a>
-    <a href="/miniproject/admin/avail.php" class="item">
-      <i class="location arrow icon"></i>
-      Avail
-    </a>
-    <a href="/miniproject/admin/logout.php" class="item">
-      <i class="sign out icon"></i>
-      Logout
-    </a>
-  </div>
-
-  <!-- Pusher contents -->
-  <div class="ui pusher">
-
-    <!-- Menu button top attached -->
-    <div class="ui top attached demo menu">
-      <a class="item" id="menu-button">
-        <i class="sidebar icon"></i>
-        Menu
+    <div class="ui secondary pointing menu" id="menu">
+      <a href="station.php" class="item">
+        Add Station
       </a>
+      <a href="#" class="active item">
+        Add Train
+      </a>
+      <a href="avail.php" class="item">
+        Avail
+      </a>
+      <div class="right menu">
+        <a class="ui item" href="#">
+          <b>Welcome Admin</b>
+        </a>
+        <a href="logout.php" class="ui item">
+          Logout &nbsp;
+          <i class="sign out icon"></i>
+        </a>
+      </div>
     </div>
     <div class="ui container">
       <form class="ui form" action="/miniproject/admin/train_submit.php" method="post">
