@@ -44,77 +44,39 @@
       }
       $conn->close();
     ?>
-    <div class="ui sidebar menu vertical labeled icon">
-    <img src="/miniproject/logo.png" id="logo">
-    <br>
-    <h4>Railway Reservation System</h4>
-    <div class="ui divider"></div>
-    <a href="#" class="item" id="menu-user-info">
-      <i class="user icon"></i>
-      Welcome
-      <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "password";
-        $dbname = "miniproject";
-        $email = $_SESSION["email"];
-        $sql = "SELECT * FROM User WHERE EmailID='$email'";
-        $con = mysqli_connect($servername, $username, $password, $dbname);
-        $result = mysqli_query($con,$sql);
-        while($row = mysqli_fetch_array($result)) {
-          $GLOBALS['user-info']=$row;
-          echo $row['Name'];
-        }
-        mysqli_close($con);
-      ?>
-    </a>
-    <a href="#" class="active item">
-      <i class="home icon"></i>
-      Home
-    </a>
-    <a href="/miniproject/transaction.php" class="item">
-      <i class="rupee icon"></i>
-      Transactions
-    </a>
-    <a href="/miniproject/logout.php" class="item">
-      <i class="sign out icon"></i>
-      Logout
-    </a>
-  </div>
-  <div class="ui modal">
-    <i class="close icon"></i>
-    <div class="header">
-      Profile
-    </div>
-    <div class="content">
-      <div class="ui list">
-        <div class="item">
-          <div class="header">Email ID</div>
-          <?php echo($GLOBALS['user-info']['EmailID']); ?>
-        </div>
-        <div class="ui divider"></div>
-        <div class="item">
-          <div class="header">Name</div>
-          <?php echo($GLOBALS['user-info']['Name']); ?>
-        </div>
-        <div class="ui divider"></div>
-        <div class="item">
-          <div class="header">Mobile</div>
-          <?php echo($GLOBALS['user-info']['Mobile']); ?>
+
+      <div class="ui secondary pointing menu" id="menu">
+        <a href="#" class="active item">
+          Home
+        </a>
+        <a href="transaction.php" class="item">
+          Transactions
+        </a>
+        <div class="right menu">
+          <a class="ui item" href="#">
+            <b>Welcome
+            <?php
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "miniproject";
+              $email = $_SESSION["email"];
+              $sql = "SELECT * FROM User WHERE EmailID='$email'";
+              $con = mysqli_connect($servername, $username, $password, $dbname);
+              $result = mysqli_query($con,$sql);
+              while($row = mysqli_fetch_array($result)) {
+                $GLOBALS['user-info']=$row;
+                echo $row['Name'];
+              }
+              mysqli_close($con);
+            ?></b>
+          </a>
+          <a href="logout.php" class="ui item">
+            Logout &nbsp;
+            <i class="sign out icon"></i>
+          </a>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- Pusher contents -->
-  <div class="ui pusher">
-
-    <!-- Menu button top attached -->
-    <div class="ui top attached demo menu">
-      <a class="item" id="menu-button">
-        <i class="sidebar icon"></i>
-        Menu
-      </a>
-    </div>
     <div class="ui container">
       <div class="ui three top attached steps">
         <div class="active step" id="search-trains">
@@ -220,7 +182,6 @@
         </div>
       </div>
     </div>
-  </div>
   <script src="/miniproject/script/menu.js"></script>
   <script>
     var trainNo,journeyDate;

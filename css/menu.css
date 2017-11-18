@@ -1,6 +1,6 @@
-#menu-button{
-  max-width:100px;
-  margin-left: 0px;
+#menu{
+  margin: 10px 0px 10px 0px !important;
+  font-size: 14px !important;
 }
 .ui.sidebar.menu.vertical.labeled.icon > .item{
   margin: 10px 10px;
