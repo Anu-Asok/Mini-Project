@@ -106,32 +106,32 @@
         <b>Which all days train run in a week?</b>
         <br><br>
         <div class="ui checkbox">
-          <label>Sunday</label>
           <input type="checkbox" name="daysRun[]" value="1">
+          <label>Sunday</label>
         </div>
         <div class="ui checkbox">
-          <label>Monday</label>
           <input type="checkbox" name="daysRun[]" value="2">
+          <label>Monday</label>
         </div>
         <div class="ui checkbox">
-          <label>Tuesday</label>
           <input type="checkbox" name="daysRun[]" value="3">
+          <label>Tuesday</label>
         </div>
         <div class="ui checkbox">
-          <label>Wednesday</label>
           <input type="checkbox" name="daysRun[]" value="4">
+          <label>Wednesday</label>
         </div>
         <div class="ui checkbox">
-          <label>Thursday</label>
           <input type="checkbox" name="daysRun[]" value="5">
+          <label>Thursday</label>
         </div>
         <div class="ui checkbox">
-          <label>Friday</label>
           <input type="checkbox" name="daysRun[]" value="6">
+          <label>Friday</label>
         </div>
         <div class="ui checkbox">
-          <label>Saturday</label>
           <input type="checkbox" name="daysRun[]" value="7">
+          <label>Saturday</label>
         </div>
         <table class="ui striped table">
           <thead>
